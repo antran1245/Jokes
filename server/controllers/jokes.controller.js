@@ -32,7 +32,7 @@ module.exports.createJoke = (req, res) => {
 // Update a joke
 module.exports.updateJoke = (req, res) => {
     Joke.findOneAndUpdate(
-        {_id: req.params.id},
+        {_id: req.params._id},
         req.body,
         {new: true, runValidators: true}
     )
@@ -47,10 +47,10 @@ module.exports.deletedJoke = (req, res) => {
         .catch(err => res.json({message: "Something went wrong", error: err}));
 }
 
-// Random a joke
-module.exports.randomJoke =(req, res) => {
-    let rand = Math.floor(Math.random() * 10)
-    Joke.find().skip(rand).limit(1)
-        .then(result => res.json({joke: result}))
-        .catch(err => res.json({message: "Something went wrong", error: err}));
-}
+// // Random a joke
+// module.exports.randomJoke =(req, res) => {
+//     let rand = Math.floor(Math.random() * 10)
+//     Joke.find().skip(rand).limit(1)
+//         .then(result => res.json({joke: result}))
+//         .catch(err => res.json({message: "Something went wrong", error: err}));
+// }
