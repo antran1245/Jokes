@@ -9,14 +9,21 @@ module.exports.findAllJokes = (req, res) => {
 
 // Get a single joke
 module.exports.findOneJoke = (req, res) => {
-    Joke.findOne({ _id: req.params.id })
-        .then(oneJoke => res.json({joke: oneJoke}))
-        .catch(err => res.json({message: "Somthing went wrong", error: err}));
+    if(req.params._id != 'rand') {
+        Joke.findOne({ _id: req.params._id })
+            .then(oneJoke => res.json({joke: oneJoke}))
+            .catch(err => res.json({message: "Somthing went wrong", error: err}));
+    } else{
+        let rand = Math.floor(Math.random() * Joke.find().count())
+        Joke.find().skip(rand).limit(1)
+            .then(result => res.json({joke: result}))
+            .catch(err => res.json({message: "Something went wrong", error: err}));
+    }
 }
 
 // Create a joke
 module.exports.createJoke = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     Joke.create(req.body)
         .then(createdJoke => res.json({joke: createdJoke}))
         .catch(err => res.json({message: "Something went wrong", error: err}));
@@ -35,7 +42,7 @@ module.exports.updateJoke = (req, res) => {
 
 // Delete a joke
 module.exports.deletedJoke = (req, res) => {
-    Joke.deleteOne({_id: req.params.id })
+    Joke.deleteOne({_id: req.params._id })
         .then(result => res.json({result: result}))
         .catch(err => res.json({message: "Something went wrong", error: err}));
 }
